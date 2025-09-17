@@ -13,6 +13,8 @@ class LogController extends Controller
     public function index()
     {
         //
+        $logs=Log::get();
+        return view("log",compact("logs"));
     }
 
     /**
@@ -58,8 +60,11 @@ class LogController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Log $log)
+    public function destroy(Log $log, string $id)
     {
         //
+        $a=Log::find($id);
+        $a->delete();
+        return redirect(route("log.index"));
     }
 }
