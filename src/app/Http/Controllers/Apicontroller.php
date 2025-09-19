@@ -83,22 +83,32 @@ class Apicontroller extends Controller
     $eventID = $request->event_id;
     $spotID = $request->spot_id;
     $operation_type = $request->operation_type;
-
+    $eventCheck=false;
+    $spotCheck=false;
     if (!$eventID) {
-        return response()->json(["error" => "event_idがありません"], 400);
-    }
-    if (!$spotID) {
-        return response()->json(["error" => "spot_idがありません"], 400);
+        return response()->json(["error" => "event_idがありません"], 404);
     }
     if (!$operation_type) {
-        return response()->json(["error" => "operation_typeがありません"], 400);
+        return response()->json(["error" => "operation_typeがありません"], 404);
     }
-
-    $log = Log::create([
-        "event_id" => $eventID,
-        "spot_id" => $spotID,
-        "operation_type" => $operation_type
-    ]);
+    $event=Event::query()->find($eventID);
+    if (!empty($event)){
+        $eventCheck=true;
+    }
+    $spot=Spot::query()->find($spotID);
+    if(!empty($spot)){
+        $spotCheck=true;
+    }
+    // else{
+    //     return response()->json(["error" => "spot_idがありません"], 404);
+    // }
+    if ($eventCheck){
+        $log = Log::create([
+            "event_id" => $eventID,
+            "spot_id" => $spotCheck?$spotID:null,
+            "operation_type" => $operation_type
+        ]);
+    }
 
     return response()->json($log, 200);
 }

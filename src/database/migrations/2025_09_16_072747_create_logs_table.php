@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger("event_id");
             $table->foreign("event_id")->references("id")->on("events")
             ->cascadeOnDelete()->cascadeOnUpdate();
-            $table->unsignedBigInteger("spot_id");
+            $table->unsignedBigInteger("spot_id")->nullable();
             $table->foreign("spot_id")->references("id")->on("spots")
             ->cascadeOnDelete()->cascadeOnUpdate();
             $table->string("operation_type");
