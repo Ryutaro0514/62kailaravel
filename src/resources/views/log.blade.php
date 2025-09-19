@@ -14,7 +14,7 @@
             <tr>
                 <td>{{ $item->id }}</td>
                 <td>{{ $item->event->name }}</td>
-                <td>{{empty($item->spots)? "" : $item->spots->name}}</td>
+                <td>{{empty($item->spot)? "" : $item->spot->name}}</td>
                 <td>{{$item->operation_type}}</td>
                 <td>{{$item->created_at}}</td>
                 <td>
