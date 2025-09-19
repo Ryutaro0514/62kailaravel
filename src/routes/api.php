@@ -6,3 +6,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get("/events",[Apicontroller::class,"getEvent"])->name("getEvent");
 Route::get("/spots",[Apicontroller::class,"getSpot"])->name("getSpot");
+Route::post("/log",[Apicontroller::class,"postLog"])->name("log.store");

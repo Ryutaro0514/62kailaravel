@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Log;
 use App\Models\Spot;
 use Faker\Guesser\Name;
 use Illuminate\Http\Request;
@@ -61,20 +62,46 @@ class Apicontroller extends Controller
         if ($request->min_y) {
             $spots->where("location_y", ">=", $request->min_y);
         }
-        if($request->name){
-            $spots->where("name","LIKE","%".$request->name."%");
+        if ($request->name) {
+            $spots->where("name", "LIKE", "%" . $request->name . "%");
         }
-        $spots=$spots->where("event_id",$eventID)->get();
-        $result=[];
+        $spots = $spots->where("event_id", $eventID)->get();
+        $result = [];
         foreach ($spots as $item) {
-            $result[]=[
-                "name"=>$item->name,
-                "description"=>$item->description,
-                "location_x"=>$item->location_x,
-                "location_y"=>$item->location_y,
-                "map_image"=>explode(",",$item->images)
+            $result[] = [
+                "name" => $item->name,
+                "description" => $item->description,
+                "location_x" => $item->location_x,
+                "location_y" => $item->location_y,
+                "map_image" => explode(",", $item->images)
             ];
         }
-        return response()->json($result,200);
+        return response()->json($result, 200);
     }
+    public function postLog(Request $request)
+{
+    $eventID = $request->event_id;
+    $spotID = $request->spot_id;
+    $operation_type = $request->operation_type;
+
+    if (!$eventID) {
+        return response()->json(["error" => "event_idがありません"], 400);
+    }
+    if (!$spotID) {
+        return response()->json(["error" => "spot_idがありません"], 400);
+    }
+    if (!$operation_type) {
+        return response()->json(["error" => "operation_typeがありません"], 400);
+    }
+
+    $log = Log::create([
+        "event_id" => $eventID,
+        "spot_id" => $spotID,
+        "operation_type" => $operation_type
+    ]);
+
+    return response()->json($log, 200);
 }
+
+}
+
