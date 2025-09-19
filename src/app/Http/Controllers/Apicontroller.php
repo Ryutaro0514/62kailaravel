@@ -99,9 +99,6 @@ class Apicontroller extends Controller
     if(!empty($spot)){
         $spotCheck=true;
     }
-    // else{
-    //     return response()->json(["error" => "spot_idがありません"], 404);
-    // }
     if ($eventCheck){
         $log = Log::create([
             "event_id" => $eventID,
